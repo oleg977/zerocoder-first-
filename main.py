@@ -1,24 +1,48 @@
-class Account:
-    def __init__(self, id, balance=0):
-        self.id = id
-        self.balance = balance
 
-    def deposit(self, money):
-        if money > 0:
-            self.balance += money
-            print(f"Вы успешно пополнили счет. Сумма по счету - {self.balance}")
+class Store:
+    def __init__(self, name, address):
+        self.name = name
+        self.address = address
+        self.items = {}  # Инициализируем пустой словарь для товаров
 
-    def withdraw(self, money):
-        if money > self.balance:
-            print(f"Недостаточно средств на счете")
-        elif money <= self.balance:
-            self.balance -= money
-            print(f"Вы успешно сняли {money} рублей. Остаток на счете: {self.balance}")
+    def add_item(self, item_name, price):
+        self.items[item_name] = price
+        print(f"Товар {item_name} Добавляем с ценой {price:.2f} рублей")
 
-    def all_balance(self):
-        print(f"Текущий баланс - {self.balance}")
-man = Account( 12323132, 600)
-man.all_balance()
-man.withdraw(450)
-man.withdraw(800)
-man.deposit(23000)
+    def remove_item(self, item_name):
+        if item_name in self.items:
+            del self.items[item_name]
+            print(f" Товар {item_name} удалён")#
+        else:
+            print(f"Товар {item_name} не найден ")
+
+    def get_price(self, item_name):
+        return self.items.get(item_name, None)  # Возвращаем цену или None, если товара нет
+
+    def update_price(self, item_name, new_price):
+        if item_name in self.items:
+            old_price = self.items[item_name]
+            self.items[item_name] = new_price
+            print(f"Цена товара {item_name} обновлена с {old_price:.2f} руб до {new_price:.2f} руб")#
+        else:
+            print(f"Товар {item_name} не найден для обновления цены")
+    def display_items(self):
+        if self.items:
+            print(f"Список товаров в магазине:")
+            for item_name,price in self.items.items():
+                print(f"- {item_name}: {price:.2f} руб")
+        else:
+            print("Список товаров пуст")
+
+
+store = Store("Ромашка", "улица Пушкина 10")
+store.add_item("Яблоко", 0.5)
+store.add_item("Банан", 0.9)
+store.add_item("Масло",0.98)
+store.add_item("Перец", 4.1)
+store.add_item("Груша", 7.4)
+print(store.get_price("Яблоко"))
+store.update_price("Яблоко", 0.8)
+print(store.get_price("Яблоко"))
+store.remove_item("Банан")
+print(store.get_price("Банан"))
