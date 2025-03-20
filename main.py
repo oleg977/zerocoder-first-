@@ -1,25 +1,24 @@
+class Account:
+    def __init__(self, id, balance=0):
+        self.id = id
+        self.balance = balance
 
+    def deposit(self, money):
+        if money > 0:
+            self.balance += money
+            print(f"Вы успешно пополнили счет. Сумма по счету - {self.balance}")
 
+    def withdraw(self, money):
+        if money > self.balance:
+            print(f"Недостаточно средств на счете")
+        elif money <= self.balance:
+            self.balance -= money
+            print(f"Вы успешно сняли {money} рублей. Остаток на счете: {self.balance}")
 
-class Warrior():
-    def __init__(self, name, power, endurance, hair_color):
-      self.name = name
-      self.power = power
-      self.endurance = endurance
-      self.hair_color = hair_color
-    def sleep(self):
-        print(f"{self.name} лег спать")
-        self.endurance += 2
-    def eat(self):
-        print(f'{self.name} сел кушать')
-        self.power +=1
-    def hit(self):
-        print(f'{self.name} бьёт кого то')
-        self.endurance -=6
-    def work(self):
-        print(f"{self.name} гуляет")
-    def info(self):
-        print(f' имя воина - {self.name}')
-        print(f"цвет волос воина - {self.hair_color}")
-        print(f"сила воина - {self.power}")
-        print(f"выносливость воина - {self.endurance}")
+    def all_balance(self):
+        print(f"Текущий баланс - {self.balance}")
+man = Account( 12323132, 600)
+man.all_balance()
+man.withdraw(450)
+man.withdraw(800)
+man.deposit(23000)
