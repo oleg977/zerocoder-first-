@@ -1,48 +1,69 @@
 
-class Store:
-    def __init__(self, name, address):
-        self.name = name
-        self.address = address
-        self.items = {}  # Инициализируем пустой словарь для товаров
+class User:
+    def __init__(self, user_id, name):
+        self._user_id = user_id  # Уникальный идентификатор пользователя
+        self._name = name        # Имя пользователя
+        self._access_level = 'user'  # Уровень доступа, по умолчанию 'user'
 
-    def add_item(self, item_name, price):
-        self.items[item_name] = price
-        print(f"Товар {item_name} Добавляем с ценой {price:.2f} рублей")
+    # Геттеры для получения значений атрибутов
+    def get_user_id(self):
+        return self._user_id
 
-    def remove_item(self, item_name):
-        if item_name in self.items:
-            del self.items[item_name]
-            print(f" Товар {item_name} удалён")#
-        else:
-            print(f"Товар {item_name} не найден ")
+    def get_name(self):
+        return self._name
 
-    def get_price(self, item_name):
-        return self.items.get(item_name, None)  # Возвращаем цену или None, если товара нет
+    def get_access_level(self):
+        return self._access_level
 
-    def update_price(self, item_name, new_price):
-        if item_name in self.items:
-            old_price = self.items[item_name]
-            self.items[item_name] = new_price
-            print(f"Цена товара {item_name} обновлена с {old_price:.2f} руб до {new_price:.2f} руб")#
-        else:
-            print(f"Товар {item_name} не найден для обновления цены")
-    def display_items(self):
-        if self.items:
-            print(f"Список товаров в магазине:")
-            for item_name,price in self.items.items():
-                print(f"- {item_name}: {price:.2f} руб")
-        else:
-            print("Список товаров пуст")
+    # Сеттеры для изменения значений атрибутов
+    def set_name(self, name):
+        self._name = name
+
+    # Метод для строкового представления объекта
+    def __str__(self):
+        return f"User(ID: {self._user_id}, Name: {self._name}, Access Level: {self._access_level})"
 
 
-store = Store("Ромашка", "улица Пушкина 10")
-store.add_item("Яблоко", 0.5)
-store.add_item("Банан", 0.9)
-store.add_item("Масло",0.98)
-store.add_item("Перец", 4.1)
-store.add_item("Груша", 7.4)
-print(store.get_price("Яблоко"))
-store.update_price("Яблоко", 0.8)
-print(store.get_price("Яблоко"))
-store.remove_item("Банан")
-print(store.get_price("Банан"))
+class Admin(User):
+    def __init__(self, user_id, name):
+        super().__init__(user_id, name)
+        self._access_level = 'admin'  # Уровень доступа администратора
+
+        # Метод для добавления пользователя
+        def add_user(self, user_list, user):
+            user_list.append(user)
+            print(f"User {user.get_name()} added successfully.")
+
+        # Метод для удаления пользователя
+        def remove_user(self, user_list, user_id):
+            for user in user_list:
+                if user.get_user_id() == user_id:
+                    user_list.remove(user)
+                    print(f"User with ID {user_id} removed successfully.")
+                    return
+            print(f"User with ID {user_id} not found.")
+
+            # Метод для строкового представления объекта
+            def __str__(self):
+                return f"Admin(ID: {self._user_id}, Name: {self._name}, Access Level: {self._access_level})"
+
+        # Создаем список для хранения пользователей
+        users = []
+
+        # Создаем обычного пользователя
+        user1 = User(1, "John Doe")
+        print(user1)
+
+        # Создаем администратора
+        admin1 = Admin(2, "Jane Doe")
+        print(admin1)
+
+        # Администратор добавляет пользователя
+        admin1.add_user(users, user1)
+
+        # Администратор пытается удалить пользователя
+        admin1.remove_user(users, 1)
+
+        # Выводим список пользователей
+        for user in users:
+            print(user)
