@@ -9,19 +9,51 @@ class Animal:
 
     def eat(self, food):
         print(f"{self.name} ест {food}.")
-class Cat(Animal):
+
+# Подкласс для млекопитающих
+class Mammal(Animal):
+    def __init__(self, name, age, fur_color):
+        super().__init__(name, age)
+        self.fur_color = fur_color
+
     def make_sound(self):
-        return "Мяу!"
-class Dog(Animal):
+        return "Гав!"  # Можно переопределить для разных млекопитающих
+
+# Подкласс для птиц
+class Bird(Animal):
+    def __init__(self, name, age, wing_span):
+        super().__init__(name, age)
+        self.wing_span = wing_span
+
     def make_sound(self):
-        return "Гав!"
+        return "Чирик!"
 
-cat = Cat("Барсик", 3)
-dog = Dog("Шарик", 5)
+# Подкласс для рептилий
+class Reptile(Animal):
+    def __init__(self, name, age, scale_color):
+        super().__init__(name, age)
+        self.scale_color = scale_color
 
-# Использование методов
-print(f"{cat.name} говорит: {cat.make_sound()}")
-cat.eat("рыбу")
+    def make_sound(self):
+        return "Шшш!"  # Звук, который может издавать рептилия
 
-print(f"{dog.name} говорит: {dog.make_sound()}")
-dog.eat("мясо")
+# Создание объектов животных
+def create_animals():
+    mammal = Mammal("Шарик", 5, "коричневый")
+    bird = Bird("Кеша", 2, "50 см")
+    reptile = Reptile("Геккон", 1, "зеленый")
+
+    # Использование методов
+    print(f"{mammal.name} говорит: {mammal.make_sound()}")
+    mammal.eat("мясо")
+
+    print(f"{bird.name} говорит: {bird.make_sound()}")
+    bird.eat("семена")
+
+    print(f"{reptile.name} говорит: {reptile.make_sound()}")
+    reptile.eat("насекомые")
+
+
+# Запуск создания животных
+if __name__ == "__main__":
+    create_animals()
