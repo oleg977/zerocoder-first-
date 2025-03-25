@@ -7,19 +7,14 @@ class Animal:
     def make_sound(self):
         raise NotImplementedError("Этот метод должен быть переопределен в подклассах")
 
-    def eat(self, food):
-        print(f"{self.name} ест {food}.")
-
-# Подкласс для млекопитающих
 class Mammal(Animal):
     def __init__(self, name, age, fur_color):
         super().__init__(name, age)
         self.fur_color = fur_color
 
     def make_sound(self):
-        return "Гав!"  # Можно переопределить для разных млекопитающих
+        return "Гав!"
 
-# Подкласс для птиц
 class Bird(Animal):
     def __init__(self, name, age, wing_span):
         super().__init__(name, age)
@@ -28,32 +23,55 @@ class Bird(Animal):
     def make_sound(self):
         return "Чирик!"
 
-# Подкласс для рептилий
 class Reptile(Animal):
     def __init__(self, name, age, scale_color):
         super().__init__(name, age)
         self.scale_color = scale_color
 
     def make_sound(self):
-        return "Шшш!"  # Звук, который может издавать рептилия
+        return "Шшш!"
 
-# Создание объектов животных
-def create_animals():
-    mammal = Mammal("Шарик", 5, "коричневый")
-    bird = Bird("Кеша", 2, "50 см")
-    reptile = Reptile("Геккон", 1, "зеленый")
+class Employee:
+    def __init__(self, name, position):
+        self.name = name
+        self.position = position
 
-    # Использование методов
-    print(f"{mammal.name} говорит: {mammal.make_sound()}")
-    mammal.eat("мясо")
+class Zoo:
+    def __init__(self):
+        self.animals = []
+        self.employees = []
 
-    print(f"{bird.name} говорит: {bird.make_sound()}")
-    bird.eat("семена")
+    def add_animal(self, animal):
+        self.animals.append(animal)
+        print(f"Добавлено животное: {animal.name}")
 
-    print(f"{reptile.name} говорит: {reptile.make_sound()}")
-    reptile.eat("насекомые")
+    def add_employee(self, employee):
+        self.employees.append(employee)
+        print(f"Добавлен сотрудник: {employee.name}")
 
+    def show_animals(self):
+        print("Животные в зоопарке:")
+        for animal in self.animals:
+            print(f"- {animal.name}, возраст: {animal.age} лет")
 
-# Запуск создания животных
+    def show_employees(self):
+        print("Сотрудники зоопарка:")
+        for employee in self.employees:
+            print(f"- {employee.name}, должность: {employee.position}")
+
+# Пример использования
 if __name__ == "__main__":
-    create_animals()
+    zoo = Zoo()
+
+    # Добавление животных
+    zoo.add_animal(Mammal("Шарик", 5, "коричневый"))
+    zoo.add_animal(Bird("Кеша", 2, "50 см"))
+    zoo.add_animal(Reptile("Геккон", 1, "зеленый"))
+
+    # Добавление сотрудников
+    zoo.add_employee(Employee("Иван", "Дрессировщик"))
+    zoo.add_employee(Employee("Мария", "Зоолог"))
+
+    # Показать животных и сотрудников
+    zoo.show_animals()
+    zoo.show_employees()
