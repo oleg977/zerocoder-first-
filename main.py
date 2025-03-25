@@ -1,11 +1,10 @@
 
+
 class Animal:
     def __init__(self, name, age):
         self.name = name
         self.age = age
 
-    def make_sound(self):
-        raise NotImplementedError("Этот метод должен быть переопределен в подклассах")
 
 class Mammal(Animal):
     def __init__(self, name, age, fur_color):
@@ -23,6 +22,7 @@ class Bird(Animal):
     def make_sound(self):
         return "Чирик!"
 
+
 class Reptile(Animal):
     def __init__(self, name, age, scale_color):
         super().__init__(name, age)
@@ -31,10 +31,27 @@ class Reptile(Animal):
     def make_sound(self):
         return "Шшш!"
 
+
 class Employee:
     def __init__(self, name, position):
         self.name = name
         self.position = position
+
+class ZooKeeper(Employee):
+    def __init__(self, name):
+        super().__init__(name, "ZooKeeper")
+
+    def feed_animal(self, animal, food):
+        print(f"{self.name} кормит {animal.name} ({animal.make_sound()}): {food}")
+
+
+class Veterinarian(Employee):
+    def __init__(self, name):
+        super().__init__(name, "Veterinarian")
+
+    def heal_animal(self, animal):
+        print(f"{self.name} лечит {animal.name} ({animal.make_sound()})")
+
 
 class Zoo:
     def __init__(self):
@@ -59,19 +76,19 @@ class Zoo:
         for employee in self.employees:
             print(f"- {employee.name}, должность: {employee.position}")
 
-# Пример использования
 if __name__ == "__main__":
     zoo = Zoo()
-
     # Добавление животных
     zoo.add_animal(Mammal("Шарик", 5, "коричневый"))
     zoo.add_animal(Bird("Кеша", 2, "50 см"))
     zoo.add_animal(Reptile("Геккон", 1, "зеленый"))
 
     # Добавление сотрудников
-    zoo.add_employee(Employee("Иван", "Дрессировщик"))
-    zoo.add_employee(Employee("Мария", "Зоолог"))
+    zookeeper = ZooKeeper("Иван")
+    veterinarian = Veterinarian("Мария")
+    zoo.add_employee(zookeeper)
+    zoo.add_employee(veterinarian)
 
     # Показать животных и сотрудников
-    zoo.show_animals()
-    zoo.show_employees()
+    zoo.show_animals()  # Вызов метода для отображения животных
+    zoo.show_employees()  # Вызов метода для отображения сотрудников
