@@ -1,94 +1,81 @@
 
+from abc import ABC, abstractmethod
 
-class Animal:
-    def __init__(self, name, age):
-        self.name = name
-        self.age = age
+# Шаг 1: Абстрактный класс для оружия
+class Weapon(ABC):
+    @abstractmethod
+    def attack(self):
+        pass
 
+# Шаг 2: Конкретные типы оружия
+class Sword(Weapon):
+    def attack(self):
+        return "наносит удар мечом"
 
-class Mammal(Animal):
-    def __init__(self, name, age, fur_color):
-        super().__init__(name, age)
-        self.fur_color = fur_color
+class Bow(Weapon):
+    def attack(self):
+        return "стреляет из лука"
 
-    def make_sound(self):
-        return "Гав!"
-
-class Bird(Animal):
-    def __init__(self, name, age, wing_span):
-        super().__init__(name, age)
-        self.wing_span = wing_span
-
-    def make_sound(self):
-        return "Чирик!"
+class Axe(Weapon):
+    def attack(self):
+        return "рубит топором"
 
 
-class Reptile(Animal):
-    def __init__(self, name, age, scale_color):
-        super().__init__(name, age)
-        self.scale_color = scale_color
-
-    def make_sound(self):
-        return "Шшш!"
+class MagicWand(Weapon):
+    def attack(self):
+        return "кастует заклинание"
 
 
-class Employee:
-    def __init__(self, name, position):
-        self.name = name
-        self.position = position
-
-class ZooKeeper(Employee):
+# Класс бойца
+class Fighter:
     def __init__(self, name):
-        super().__init__(name, "ZooKeeper")
+        self.name = name
+        self.weapon = None
 
-    def feed_animal(self, animal, food):
-        print(f"{self.name} кормит {animal.name} ({animal.make_sound()}): {food}")
+    def change_weapon(self, weapon: Weapon):
+        self.weapon = weapon
+        print(f"{self.name} выбирает {weapon.__class__.__name__.lower()}.")
 
+    def attack(self):
+        if self.weapon:
+            print(f"{self.name} {self.weapon.attack()}.")
+        else:
+            print(f"{self.name} не имеет оружия!")
 
-class Veterinarian(Employee):
+            # Класс монстра
+class Monster:
     def __init__(self, name):
-        super().__init__(name, "Veterinarian")
+        self.name = name
+        self.is_defeated = False
 
-    def heal_animal(self, animal):
-        print(f"{self.name} лечит {animal.name} ({animal.make_sound()})")
+    def defeat(self):
+        self.is_defeated = True
+        print(f"{self.name} побежден!")
 
+            # Шаг 4: Механизм боя
+def battle(fighter: Fighter, monster: Monster):
+    fighter.attack()
+    monster.defeat()
+    print()
 
-class Zoo:
-    def __init__(self):
-        self.animals = []
-        self.employees = []
-
-    def add_animal(self, animal):
-        self.animals.append(animal)
-        print(f"Добавлено животное: {animal.name}")
-
-    def add_employee(self, employee):
-        self.employees.append(employee)
-        print(f"Добавлен сотрудник: {employee.name}")
-
-    def show_animals(self):
-        print("Животные в зоопарке:")
-        for animal in self.animals:
-            print(f"- {animal.name}, возраст: {animal.age} лет")
-
-    def show_employees(self):
-        print("Сотрудники зоопарка:")
-        for employee in self.employees:
-            print(f"- {employee.name}, должность: {employee.position}")
-
+            # Демонстрация
 if __name__ == "__main__":
-    zoo = Zoo()
-    # Добавление животных
-    zoo.add_animal(Mammal("Шарик", 5, "коричневый"))
-    zoo.add_animal(Bird("Кеша", 2, "50 см"))
-    zoo.add_animal(Reptile("Геккон", 1, "зеленый"))
+     hero = Fighter("Боец")
+     monster = Monster("Монстр")
+     # Бой с мечом
+     hero.change_weapon(Sword())
+     battle(hero, monster)
 
-    # Добавление сотрудников
-    zookeeper = ZooKeeper("Иван")
-    veterinarian = Veterinarian("Мария")
-    zoo.add_employee(zookeeper)
-    zoo.add_employee(veterinarian)
+     # Бой с луком
+     hero.change_weapon(Bow())
+     battle(hero, monster)
 
-    # Показать животных и сотрудников
-    zoo.show_animals()  # Вызов метода для отображения животных
-    zoo.show_employees()  # Вызов метода для отображения сотрудников
+     # Бой с топором (новое оружие добавлено без изменения существующего кода)
+     hero.change_weapon(Axe())
+     battle(hero, monster)
+
+     # Бой с волшебной палочкой (новое оружие)
+     hero.change_weapon(MagicWand())
+     battle(hero, monster)
+
+
