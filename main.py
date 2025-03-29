@@ -1,135 +1,124 @@
-
 import pygame
-import time
 import random
 import cv2
 import numpy as np
 
-pygame.init()
+# Настройки
+width, height = 640, 480
+cell_size = 20
 
-# Задаем цвета
-white = (255, 255, 255)
-yellow = (255, 255, 102)
+# Цвета
 black = (0, 0, 0)
-red = (213, 50, 80)
+white = (255, 255, 255)
 green = (0, 255, 0)
-blue = (50, 153, 213)
+red = (255, 0, 0)
 
-# Устанавливаем размеры окна
-width = 600
-height = 400
-dis = pygame.display.set_mode((width, height))
-pygame.display.set_caption('Змейка')
-
+# Инициализация Pygame
+pygame.init()
+screen = pygame.display.set_mode((width, height))
+pygame.display.set_caption("Змейка")
 clock = pygame.time.Clock()
 
-snake_block = 10
-snake_speed = 15
+# Создаем файл для видеозаписи
+fourcc = cv2.VideoWriter_fourcc(*'XVID')
+out = cv2.VideoWriter('snake_game.avi', fourcc, 30.0, (width, height))
 
-font_style = pygame.font.SysFont("bahnschrift", 25)
-score_font = pygame.font.SysFont("comicsansms", 35)
 
-def our_snake(snake_block, snake_list):
-    for x in snake_list:
-        pygame.draw.rect(dis, black, [x[0], x[1], snake_block, snake_block])
+# Класс для змейки
+class Snake:
+    def __init__(self):
+        self.body = [[100, 100], [80, 100], [60, 100]]  # Начальное положение змейки
+        self.direction = 'RIGHT'
+        self.grow = False
 
-def your_score(score):
-    value = score_font.render("Счет: " + str(score), True, black)
-    dis.blit(value, [0, 0])
+    def move(self):
+        head = self.body[0][:]
+        if self.direction == 'UP':
+            head[1] -= cell_size
+        elif self.direction == 'DOWN':
+            head[1] += cell_size
+        elif self.direction == 'LEFT':
+            head[0] -= cell_size
+        elif self.direction == 'RIGHT':
+            head[0] += cell_size
 
-def message(msg, color):
-    mesg = font_style.render(msg, True, color)
-    dis.blit(mesg, [width / 6, height / 3])
+        self.body.insert(0, head)
+        if not self.grow:
+            self.body.pop()
+        else:
+            self.grow = False
 
-def gameLoop():
-    game_over = False
-    game_close = False
+            # Класс для змейки
+            class Snake:
+                def __init__(self):
+                    self.body = [[100, 100], [80, 100], [60, 100]]  # Начальное положение змейки
+                    self.direction = 'RIGHT'
+                    self.grow = False
 
-    x1 = width / 2
-    y1 = height / 2
+                def move(self):
+                    head = self.body[0][:]
+                    if self.direction == 'UP':
+                        head[1] -= cell_size
+                    elif self.direction == 'DOWN':
+                        head[1] += cell_size
+                    elif self.direction == 'LEFT':
+                        head[0] -= cell_size
+                    elif self.direction == 'RIGHT':
+                        head[0] += cell_size
 
-    x1_change = 0
-    y1_change = 0
+                    self.body.insert(0, head)
+                    if not self.grow:
+                        self.body.pop()
+                    else:
+                        self.grow = False
+                        Основная
+                        функция
 
-    snake_List = []
-    Length_of_snake = 1
+                    def game_loop():
+                        snake = Snake()
+                        food_position = [random.randrange(1, width // cell_size) * cell_size,
+                                         random.randrange(1, height // cell_size) * cell_size]
+                        game_over = False
 
-    foodx = round(random.randrange(0, width - snake_block) / 10.0) * 10.0
-    foody = round(random.randrange(0, height - snake_block) / 10.0) * 10.0
+                        while not game_over:
+                            for event in pygame.event.get():
+                                if event.type == pygame.QUIT:
+                                    game_over = True
+                                if event.type == pygame.KEYDOWN:
+                                    if event.key == pygame.K_UP and snake.direction != 'DOWN':
+                                        snake.direction = 'UP'
+                                    if event.key == pygame.K_DOWN and snake.direction != 'UP':
+                                        snake.direction = 'DOWN'
+                                    if event.key == pygame.K_LEFT and snake.direction != 'RIGHT':
+                                        snake.direction = 'LEFT'
+                                    if event.key == pygame.K_RIGHT and snake.direction != 'LEFT':
+                                        snake.direction = 'RIGHT'
 
-    # Настройка для записи видео
-    fourcc = cv2.VideoWriter_fourcc(*'XVID')
-    out = cv2.VideoWriter('snake_game.avi', fourcc, snake_speed, (width, height))
+                            snake.move()
 
-    while not game_over:
-        while game_close:
-            dis.fill(blue)
-            message("Ты проиграл! Нажми C, чтобы сыграть снова или Q, чтобы выйти", red)
-            your_score(Length_of_snake - 1)
-            pygame.display.update()
+                            if snake.body[0] == food_position:
+                                snake.grow_snake()
+                                food_position = [random.randrange(1, width // cell_size) * cell_size,
+                                                 random.randrange(1, height // cell_size) * cell_size]
 
-            for event in pygame.event.get():
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_q:
-                        game_over = True
-                        game_close = False
-                    if event.key == pygame.K_c:
-                        gameLoop()
+                            screen.fill(black)
+                            pygame.draw.rect(screen, green, (food_position[0], food_position[1], cell_size, cell_size))
+                            for segment in snake.body:
+                                pygame.draw.rect(screen, white, (segment[0], segment[1], cell_size, cell_size))
 
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                game_over = True
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_LEFT:
-                    x1_change = -snake_block
-                    y1_change = 0
-                elif event.key == pygame.K_RIGHT:
-                    x1_change = snake_block
-                    y1_change = 0
-                elif event.key == pygame.K_UP:
-                    y1_change = -snake_block
-                    x1_change = 0
-                elif event.key == pygame.K_DOWN:
-                    y1_change = snake_block
-                    x1_change = 0
+                            # Запись текущего кадра в видео
+                            frame = pygame.surfarray.array3d(pygame.display.get_surface())
+                            frame = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
+                            out.write(frame)
 
-        if x1 >= width or x1 < 0 or y1 >= height or y1 < 0:
-            game_close = True
-        x1 += x1_change
-        y1 += y1_change
-        dis.fill(blue)
-        pygame.draw.rect(dis, green, [foodx, foody, snake_block, snake_block])
-        snake_Head = []
-        snake_Head.append(x1)
-        snake_Head.append(y1)
-        snake_List.append(snake_Head)
-        if len(snake_List) > Length_of_snake:
-            del snake_List[0]
+                            pygame.display.flip()
+                            clock.tick(10)
 
-        for x in snake_List[:-1]:
-            if x == snake_Head:
-                game_close = True
+                        out.release()
+                        pygame.quit()
 
-        our_snake(snake_block, snake_List)
-        your_score(Length_of_snake - 1)
+                    if __name__ == "__main__":
+                        game_loop()
 
-        # Запись текущего кадра в видеофайл
-        frame = pygame.surfarray.array3d(pygame.display.get_surface())
-        frame = np.rot90(frame)  # Поворачиваем изображение на 90 градусов
-        frame = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)  # Конвертируем цветовой формат
-        out.write(frame)  # Записываем кадр в видео
 
-        pygame.display.update()
 
-        if x1 == foodx and y1 == foody:
-            foodx = round(random.randrange(0, width - snake_block) / 10.0) * 10.0
-            foody = round(random.randrange(0, height - snake_block) / 10.0) * 10.0
-            Length_of_snake += 1
-
-        clock.tick(snake_speed)
-
-    out.release()  # Закрываем файл видео
-    pygame.quit()
-    quit()
-
-gameLoop()
