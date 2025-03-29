@@ -1,3 +1,4 @@
+
 import pygame
 import random
 import cv2
@@ -42,43 +43,43 @@ class Snake:
         elif self.direction == 'RIGHT':
             head[0] += cell_size
 
-        self.body.insert(0, head)
-        if not self.grow:
-            self.body.pop()
-        else:
-            self.grow = False
+            self.body.insert(0, head)
+            if not self.grow:
+                self.body.pop()
+            else:
+                self.grow = False
 
-            # Класс для змейки
-            class Snake:
-                def __init__(self):
-                    self.body = [[100, 100], [80, 100], [60, 100]]  # Начальное положение змейки
-                    self.direction = 'RIGHT'
-                    self.grow = False
-
-                def move(self):
-                    head = self.body[0][:]
-                    if self.direction == 'UP':
-                        head[1] -= cell_size
-                    elif self.direction == 'DOWN':
-                        head[1] += cell_size
-                    elif self.direction == 'LEFT':
-                        head[0] -= cell_size
-                    elif self.direction == 'RIGHT':
-                        head[0] += cell_size
-
-                    self.body.insert(0, head)
-                    if not self.grow:
-                        self.body.pop()
-                    else:
+                # Класс для змейки
+                class Snake:
+                    def __init__(self):
+                        self.body = [[100, 100], [80, 100], [60, 100]]  # Начальное положение змейки
+                        self.direction = 'RIGHT'
                         self.grow = False
-                        Основная
-                        функция
 
-                    def game_loop():
-                        snake = Snake()
-                        food_position = [random.randrange(1, width // cell_size) * cell_size,
-                                         random.randrange(1, height // cell_size) * cell_size]
-                        game_over = False
+                        def move(self):
+                            head = self.body[0][:]
+                            if self.direction == 'UP':
+                                head[1] -= cell_size
+                            elif self.direction == 'DOWN':
+                                head[1] += cell_size
+                            elif self.direction == 'LEFT':
+                                head[0] -= cell_size
+                            elif self.direction == 'RIGHT':
+                                head[0] += cell_size
+
+                            self.body.insert(0, head)
+                            if not self.grow:
+                                self.body.pop()
+                            else:
+                                self.grow = False
+                                Основная
+                                функция
+
+                                def game_loop():
+                                    snake = Snake()
+                                    food_position = [random.randrange(1, width // cell_size) * cell_size,
+                                                     random.randrange(1, height // cell_size) * cell_size]
+                                    game_over = False
 
                         while not game_over:
                             for event in pygame.event.get():
@@ -119,6 +120,5 @@ class Snake:
 
                     if __name__ == "__main__":
                         game_loop()
-
 
 
